@@ -33,48 +33,6 @@ public class FileManager {
 	}// end StoI
 	
 	
-	public static void CsvReader(File fnev, DefaultTableModel ctm) {
-		String s = "";
-
-		try {
-			BufferedReader in = new BufferedReader(new FileReader(fnev));
-			s = in.readLine(); // === mezõnevek az elsõ sorból
-			s = in.readLine(); // === adatsor
-
-			while (s != null) {
-				String[] st = s.split(";"); //tömbbe tördeli az adatokat
-				ctm.addRow(new Object[] { new Boolean(false), StoI(st[0]), st[1], StoI(st[2]) });
-				s = in.readLine();
-			}
-			in.close();
-			JOptionPane.showMessageDialog(null, "Adatok beolvasva!", "", 1);
-		} catch (IOException ioe) {
-			JOptionPane.showMessageDialog(null, "CsvReader: " + ioe.getMessage(), "", 0);
-		}
-	}// end CsvReader
-	
-	/*
-	public static void CsvReaderCollection(File fnev, ArrayList<Collection> ctm) {
-		String s = "";
-
-		try {
-			BufferedReader in = new BufferedReader(new FileReader(fnev));
-			s = in.readLine(); // === mezõnevek az elsõ sorból
-			s = in.readLine(); // === adatsor
-
-			while (s != null) {
-				String[] st = s.split(";"); //tömbbe tördeli az adatokat
-				Collection aaa = new Album(Utility.StringToInt(st[0]),st[1],st[2],Utility.StringToDate(st[3]),st[4],st[5],Utility.StringToInt(st[6]));
-				ctm.add(aaa);
-				s = in.readLine();
-			}
-			in.close();
-			JOptionPane.showMessageDialog(null, "Adatok beolvasva!", "", 1);
-		} catch (IOException ioe) {
-			JOptionPane.showMessageDialog(null, "CsvReader: " + ioe.getMessage(), "", 0);
-		}
-	}
-	*/
 	public static void CsvReaderAlbum(File fnev, ArrayList<Album> ctm) {
 		String s = "";
 
@@ -122,26 +80,6 @@ public class FileManager {
 		}
 	}// end CsvReader
 	
-	/*
-	public static void CsvWriter(String fnev, DefaultTableModel ctm) {
-		try {
-			PrintStream out = new PrintStream(new FileOutputStream(fnev));
-			out.println("Id;Name;NumberOfSongs");
-			int rdb = ctm.getRowCount();
-			int cdb = ctm.getColumnCount();
-			for (int i = 0; i < rdb; i++) {
-				for (int j = 1; j < cdb - 1; j++) {
-					out.print("" + ctm.getValueAt(i, j) + ";");
-				}
-				out.println("" + ctm.getValueAt(i, cdb - 1));
-			}
-			out.close();
-			JOptionPane.showMessageDialog(null, "Adatok kiírva!", "", 1);
-		} catch (IOException ioe) {
-			JOptionPane.showMessageDialog(null, "CsvWriter: " + ioe.getMessage(), "", 0);
-		}
-	}// end csvWriter
-	*/
 	public static void CsvWriterAlbum(String fnev, ArrayList<Album> ctm) {
 		try {
 			File file = new File(fnev);
