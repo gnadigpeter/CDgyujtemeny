@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 
-public class Menu extends JFrame {
+public class CDMenu extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
@@ -50,7 +50,7 @@ public class Menu extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Menu frame = new Menu();
+					CDMenu frame = new CDMenu();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -62,7 +62,7 @@ public class Menu extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Menu() {
+	public CDMenu() {
 		Object tableColumnsCTM[] = { "-", "Id", "Név", "Zeneszámok(db)" };
 		ctm = new CollectionTableModel(tableColumnsCTM, 0);
 
@@ -77,7 +77,7 @@ public class Menu extends JFrame {
 		contentPane.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(203, 8, 330, 202);
+		scrollPane.setBounds(20, 45, 513, 202);
 		contentPane.add(scrollPane);
 
 		table = new JTable(ctm);
@@ -148,7 +148,7 @@ public class Menu extends JFrame {
 				if (db > 1)
 					Utility.showMD("Több Gyûjtemény van kijelölve!", 0);
 				if (db == 1) {
-					CollectionView collectionView = new CollectionView(Menu.this, CollectionArrayList.get(jel));
+					CollectionView collectionView = new CollectionView(CDMenu.this, CollectionArrayList.get(jel));
 					collectionView.setVisible(true);
 				}
 				
@@ -156,7 +156,7 @@ public class Menu extends JFrame {
 				
 			}
 		});
-		button.setBounds(104, 224, 138, 23);
+		button.setBounds(395, 258, 138, 23);
 		contentPane.add(button);
 
 		JButton btnNewCollection = new JButton("New Collection");
@@ -173,7 +173,7 @@ public class Menu extends JFrame {
 						}
 					}
 				}
-				NewCollection createCollection = new NewCollection(Menu.this, AlbumArrayList, kodv);
+				NewCollection createCollection = new NewCollection(CDMenu.this, AlbumArrayList, kodv);
 				createCollection.setVisible(true);
 				int acvb = createCollection.Exit();
 				System.out.println("collection: "+acvb);
@@ -184,7 +184,7 @@ public class Menu extends JFrame {
 				}
 			}
 		});
-		btnNewCollection.setBounds(10, 47, 89, 23);
+		btnNewCollection.setBounds(20, 258, 138, 23);
 		contentPane.add(btnNewCollection);
 
 		JButton btnNewalbum = new JButton("NewAlbum");
@@ -201,7 +201,7 @@ public class Menu extends JFrame {
 						}
 					}
 				}
-				NewAlbum createAlbum = new NewAlbum(Menu.this, kodv);
+				NewAlbum createAlbum = new NewAlbum(CDMenu.this, kodv);
 				createAlbum.setVisible(true);
 				System.out.println("album: "+createAlbum.Exit());
 				if (createAlbum.Exit() == 1) {
@@ -211,30 +211,18 @@ public class Menu extends JFrame {
 				}
 			}
 		});
-		btnNewalbum.setBounds(10, 79, 89, 23);
+		btnNewalbum.setBounds(20, 292, 138, 23);
 		contentPane.add(btnNewalbum);
 
 		JButton btnListOfAlbums = new JButton("List of albums");
 		btnListOfAlbums.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AlbumList albumList = new AlbumList(Menu.this, atm);
+				AlbumList albumList = new AlbumList(CDMenu.this, atm);
 				albumList.setVisible(true);
 			}
 		});
-		btnListOfAlbums.setBounds(104, 79, 89, 23);
+		btnListOfAlbums.setBounds(395, 292, 138, 23);
 		contentPane.add(btnListOfAlbums);
-
-		JButton btnTest = new JButton("test");
-		btnTest.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("albums: ");
-				AlbumArrayList.forEach((n) -> System.out.println(n));
-				System.out.println("collections: ");
-				CollectionArrayList.forEach((n) -> System.out.println(n));
-			}
-		});
-		btnTest.setBounds(10, 290, 89, 23);
-		contentPane.add(btnTest);
 
 	}
 }
