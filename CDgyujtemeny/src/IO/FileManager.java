@@ -53,7 +53,7 @@ public class FileManager {
 			JOptionPane.showMessageDialog(null, "CsvReader: " + ioe.getMessage(), "", 0);
 		}
 	}// end CsvReader
-	
+	/*
 	public static void CsvReaderCollection(File fnev, ArrayList<Collection> ctm) {
 		String s = "";
 
@@ -67,6 +67,32 @@ public class FileManager {
 				ArrayList<Album> a = new ArrayList<Album>();
 				for(int i=2;i<st.length;i=i+7) {
 					a.add(new Album(Utility.StringToInt(st[i]), st[i+1], st[i+2],Utility.StringToDate(st[i+3]) , st[i+4] , st[i+5] , Utility.StringToInt(st[i+6])));
+				}
+				
+				Collection aaa = new Collection(Utility.StringToInt(st[0]),st[1],a);
+				ctm.add(aaa);
+				s = in.readLine();
+			}
+			in.close();
+			JOptionPane.showMessageDialog(null, "Adatok beolvasva!", "", 1);
+		} catch (IOException ioe) {
+			JOptionPane.showMessageDialog(null, "CsvReader: " + ioe.getMessage(), "", 0);
+		}
+	}// end CsvReader
+	*/
+	public static void CsvReaderCollection2(File fnev, ArrayList<Collection> ctm, ArrayList<Album> al) {
+		String s = "";
+
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(fnev));
+			s = in.readLine(); // === mezõnevek az elsõ sorból
+			s = in.readLine(); // === adatsor
+
+			while (s != null) {
+				String[] st = s.split(";"); //tömbbe tördeli az adatokat
+				ArrayList<Album> a = new ArrayList<Album>();
+				for(int i=2;i<st.length;i++) {
+					a.add(al.get(Utility.AlbumArrayListFindId(al, Utility.StringToInt(st[i]))));
 				}
 				
 				Collection aaa = new Collection(Utility.StringToInt(st[0]),st[1],a);
@@ -106,7 +132,7 @@ public class FileManager {
 			JOptionPane.showMessageDialog(null, "CsvWriter: " + ioe.getMessage(), "", 0);
 		}
 	}// end csvWriter
-	
+	/*
 	public static void CsvWriterCollection(String fnev, ArrayList<Collection> ctm) {
 		try {
 			File file = new File(fnev);
@@ -130,7 +156,39 @@ public class FileManager {
 			JOptionPane.showMessageDialog(null, "CsvWriter: " + ioe.getMessage(), "", 0);
 		}
 	}// end csvWriter
+	*/
+	public static void CsvWriterCollection2(String fnev, ArrayList<Collection> ctm) {
+		try {
+			File file = new File(fnev);
+	        FileWriter fw = new FileWriter(file);
+	        BufferedWriter bw = new BufferedWriter(fw);
+	        bw.write("Collection");
+	        bw.newLine();
+	        for(int i=0;i<ctm.size();i++)
+	        {
+	            bw.write(ctm.get(i).getId()+";");
+	            bw.write(ctm.get(i).getName()+";");
+	            
+	            bw.write(AlbumsIds(ctm.get(i).getAlbums()));
+	            bw.newLine();
+	        }
+	        bw.close();
+	        fw.close();
+	        
+			JOptionPane.showMessageDialog(null, "Adatok kiírva!", "", 1);
+		} catch (IOException ioe) {
+			JOptionPane.showMessageDialog(null, "CsvWriter: " + ioe.getMessage(), "", 0);
+		}
+	}// end csvWriter
 	
+	public static String AlbumsIds(ArrayList<Album> al) {
+		String albumIds = "";
+		for(int i=0;i<al.size();i++)
+        {
+			albumIds += al.get(i).getId()+";";
+        }
+		return albumIds;
+	}
 	
 	public static String AlbumToCSVArrayList (ArrayList<Album> al) {
 		//ArrayList<String> aaaa = new ArrayList();

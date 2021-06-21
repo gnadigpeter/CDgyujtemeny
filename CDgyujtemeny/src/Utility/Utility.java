@@ -92,4 +92,57 @@ public  class Utility {
 	public static String DateToString(Date a) {
 		return sdf.format(a).toString();
 	}
+	
+	public static int CollectionArrayListFindId(ArrayList<Collection> a, int Id) {
+		for(int i=0; i<a.size();i++) {
+			if(a.get(i).getId() == Id) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	public static void CollectionArrayListRemoveById(ArrayList<Collection> a, int Id) {
+		int index = CollectionArrayListFindId(a, Id);
+		if(index != -1) {
+			a.remove(index);
+		}
+	}
+	
+	public static int AlbumArrayListFindId(ArrayList<Album> a, int Id) {
+		for(int i=0; i<a.size();i++) {
+			if(a.get(i).getId() == Id) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	public static void AlbumArrayListRemoveById(ArrayList<Album> a, int Id) {
+		int index = AlbumArrayListFindId(a, Id);
+		if(index != -1) {
+			a.remove(index);
+		}
+	}
+	
+	public static int Checked(DefaultTableModel tm) {
+		int db = 0, jel = 0, x = 0;
+		for (x = 0; x < tm.getRowCount(); x++)
+			if ((Boolean) tm.getValueAt(x, 0)) { // ha kivan jelölve
+				db++;
+				jel = x;
+			}
+		if (db == 0)
+			Utility.showMD("Nincs kijelölve a törlendõ rekord!", 0);
+
+		if (db > 1)
+			Utility.showMD("Több rekord van kijelölve!\nEgyszerrecsak egy rekord törölhetõ!", 0);
+		if (db == 1) {
+			return jel;
+		}
+		
+		return -55;
+	}
+	
+	
 }

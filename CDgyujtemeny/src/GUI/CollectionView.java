@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import Models.*;
 import Utility.Utility;
@@ -24,12 +25,12 @@ public class CollectionView extends JDialog {
 	private AlbumTableModel atm;
 
 	
-	public CollectionView(JFrame f, Collection c) {
+	public CollectionView(JFrame f, Collection c, ArrayList<Album> AlbumArrayList) {
 		super(f, c.getName(), true);
 		Object tableColumnsATM[] = { "-", "Id", "Elõadó", "Album","Évjárat","Cím","Stílus","Zeneszámok(db)" };
 		atm = new AlbumTableModel(tableColumnsATM, 0);
 		
-		Utility.AlbumArrayListToTableModel(c.getAlbums(), atm);
+		Utility.AlbumArrayListToTableModel(c.getAlbums(), atm); //Collection Albums
 		
 		setBounds(100, 100, 500, 300);
 		getContentPane().setLayout(null);
@@ -40,7 +41,7 @@ public class CollectionView extends JDialog {
 				dispose(); setVisible(false);
 			}
 		});
-		btnBezar.setBounds(270, 219, 97, 25);
+		btnBezar.setBounds(334, 220, 97, 25);
 		getContentPane().add(btnBezar);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -49,6 +50,50 @@ public class CollectionView extends JDialog {
 
 		table = new JTable(atm);
 		scrollPane.setViewportView(table);
+		/*
+		JButton btnAddalbum = new JButton("Moddify Collection");
+		btnAddalbum.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int kodv =c.getId();
+				
+				NewCollection createCollection = new NewCollection(f, AlbumArrayList, kodv);
+				createCollection.setVisible(true);
+				int acvb = createCollection.Exit();
+				//System.out.println("collection: " + acvb);
+				if (acvb == 1) {
+					Collection newCollection = createCollection.getCollection();
+					CollectionArrayList.add(newCollection);
+					Utility.CollectionArrayListToTableModel(CollectionArrayList, ctm);
+				}
+			}
+		});
+		btnAddalbum.setBounds(58, 220, 97, 25);
+		getContentPane().add(btnAddalbum);
+		*/
+		JButton btnDeletealbum = new JButton("DeleteAlbum");
+		btnDeletealbum.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int db = 0, jel = 0, x = 0;
+				for (x = 0; x < atm.getRowCount(); x++)
+					if ((Boolean) atm.getValueAt(x, 0)) { // ha kivan jelölve
+						db++;
+						jel = x;
+					}
+				if (db == 0)
+					Utility.showMD("Nincs kijelölve a törlendõ rekord!", 0);
+
+				if (db > 1)
+					Utility.showMD("Több rekord van kijelölve!\nEgyszerrecsak egy rekord törölhetõ!", 0);
+				if (db == 1) {
+					int Id = (int) atm.getValueAt(jel, 1);
+					atm.removeRow(jel);
+					Utility.AlbumArrayListRemoveById(c.getAlbums(),Id);
+					Utility.showMD("A rekord törölve!", 1);
+				}
+			}
+		});
+		btnDeletealbum.setBounds(189, 221, 97, 25);
+		getContentPane().add(btnDeletealbum);
 	}
 
 }
