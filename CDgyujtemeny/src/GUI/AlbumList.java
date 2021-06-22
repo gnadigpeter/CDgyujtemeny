@@ -19,26 +19,27 @@ import javax.swing.table.TableRowSorter;
 
 import GUI.Tables.AlbumTableModel;
 import Models.Album;
+import Models.Collection;
 import Utility.Utility;
 
 public class AlbumList extends JDialog {
 	private JTable table;
 	private AlbumTableModel atm;
-	
+
 	public AlbumList(JFrame f, AlbumTableModel betm, ArrayList<Album> AlbumArrayList) {
 		super(f, "List of albums", true);
 		atm = betm;
 		setBounds(100, 100, 500, 300);
 		getContentPane().setLayout(null);
 
-		JButton btnBezar = new JButton("Bezar");
+		JButton btnBezar = new JButton("Close");
 		btnBezar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
 				setVisible(false);
 			}
 		});
-		btnBezar.setBounds(270, 219, 97, 25);
+		btnBezar.setBounds(377, 225, 97, 25);
 		getContentPane().add(btnBezar);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -51,37 +52,19 @@ public class AlbumList extends JDialog {
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int db = 0, jel = 0, x = 0;
-				for (x = 0; x < atm.getRowCount(); x++)
-					if ((Boolean) atm.getValueAt(x, 0)) { // ha kivan jelölve
-						db++;
-						jel = x;
-					}
-				if (db == 0)
-					Utility.showMD("Nincs kijelölve a törlendõ rekord!", 0);
-
-				if (db > 1)
-					Utility.showMD("Több rekord van kijelölve!\nEgyszerrecsak egy rekord törölhetõ!", 0);
-				if (db == 1) {
-					int Id = (int) atm.getValueAt(jel, 1);
-					atm.removeRow(jel);
-					Utility.AlbumArrayListRemoveById(AlbumArrayList,Id);
-					Utility.showMD("A rekord törölve!", 1);
-				}
-
+				Utility.DeleteAlbum(atm, AlbumArrayList);
 			}
 		});
-		btnDelete.setBounds(86, 220, 97, 25);
+		btnDelete.setBounds(189, 225, 97, 25);
 		getContentPane().add(btnDelete);
 
-		/*
-		 * TableColumn tc = null; for (int i = 0; i < 6; i++) { tc =
-		 * table.getColumnModel().getColumn(i); if (i == 0 || i == 1 || i == 5)
-		 * tc.setPreferredWidth(30); else { tc.setPreferredWidth(100); } } // end for
-		 * 
-		 * table.setAutoCreateRowSorter(true); TableRowSorter<AlbumTableModel> trs =
-		 * (TableRowSorter<AlbumTableModel>) table.getRowSorter(); trs.setSortable(0,
-		 * false);
-		 */
-	}// end EmpList konstruktor
+		JButton btnModdifyAlbum = new JButton("Moddify");
+		btnModdifyAlbum.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Utility.ModdifyAlbumn(f, atm, AlbumArrayList);
+			}
+		});
+		btnModdifyAlbum.setBounds(10, 225, 97, 25);
+		getContentPane().add(btnModdifyAlbum);
+	}
 }// end class

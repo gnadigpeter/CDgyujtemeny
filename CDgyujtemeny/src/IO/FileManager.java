@@ -92,7 +92,13 @@ public class FileManager {
 				String[] st = s.split(";"); //tömbbe tördeli az adatokat
 				ArrayList<Album> a = new ArrayList<Album>();
 				for(int i=2;i<st.length;i++) {
-					a.add(al.get(Utility.AlbumArrayListFindId(al, Utility.StringToInt(st[i]))));
+					try{
+						a.add(al.get(Utility.AlbumArrayListFindId(al, Utility.StringToInt(st[i]))));
+					}catch(ArrayIndexOutOfBoundsException exception){
+						System.out.println("Hibás AlbumID");
+						String ErrorMessage = "Hibás Album Id volt a beolvasott adatok közt\n Hibás Gyûjtemény: " + st[1] + "!";
+						Utility.showMD(ErrorMessage, 1);
+					}
 				}
 				
 				Collection aaa = new Collection(Utility.StringToInt(st[0]),st[1],a);

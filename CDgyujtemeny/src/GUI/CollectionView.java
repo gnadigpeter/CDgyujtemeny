@@ -50,26 +50,7 @@ public class CollectionView extends JDialog {
 
 		table = new JTable(atm);
 		scrollPane.setViewportView(table);
-		/*
-		JButton btnAddalbum = new JButton("Moddify Collection");
-		btnAddalbum.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int kodv =c.getId();
-				
-				NewCollection createCollection = new NewCollection(f, AlbumArrayList, kodv);
-				createCollection.setVisible(true);
-				int acvb = createCollection.Exit();
-				//System.out.println("collection: " + acvb);
-				if (acvb == 1) {
-					Collection newCollection = createCollection.getCollection();
-					CollectionArrayList.add(newCollection);
-					Utility.CollectionArrayListToTableModel(CollectionArrayList, ctm);
-				}
-			}
-		});
-		btnAddalbum.setBounds(58, 220, 97, 25);
-		getContentPane().add(btnAddalbum);
-		*/
+		
 		JButton btnDeletealbum = new JButton("DeleteAlbum");
 		btnDeletealbum.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

@@ -70,7 +70,7 @@ public class CDMenu extends JFrame {
 		atm = new AlbumTableModel(tableColumnsATM, 0);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 559, 415);
+		setBounds(100, 100, 559, 430);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -100,14 +100,6 @@ public class CDMenu extends JFrame {
 		JButton btnBetoltes = new JButton("Betoltes");
 		btnBetoltes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * FileDialog fd = new FileDialog(new Frame(), " ", FileDialog.LOAD);
-				 * fd.setFile("*.csv"); fd.setVisible(true); if (fd.getFile() != null) { fbe =
-				 * new File(fd.getDirectory(), fd.getFile()); FileManager.CsvReader(fbe, ctm); }
-				 * // end if
-				 */
-				// fbe = new File("resources/testadatok.csv");
-				// FileManager.CsvReader(fbe, ctm);
 				fbe = new File("resources/testAlbumok.csv");
 				FileManager.CsvReaderAlbum(fbe, AlbumArrayList);
 				Utility.AlbumArrayListToTableModel(AlbumArrayList, atm);
@@ -119,7 +111,7 @@ public class CDMenu extends JFrame {
 				System.out.println("aaa");
 			}
 		});
-		btnBetoltes.setBounds(10, 11, 89, 23);
+		btnBetoltes.setBounds(20, 11, 89, 23);
 		contentPane.add(btnBetoltes);
 
 		JButton btnKiiras = new JButton("Kiiras");
@@ -129,58 +121,22 @@ public class CDMenu extends JFrame {
 				FileManager.CsvWriterCollection2("resources/testGyujtemenyek.csv", CollectionArrayList);
 			}
 		});
-		btnKiiras.setBounds(104, 11, 89, 23);
+		btnKiiras.setBounds(119, 11, 89, 23);
 		contentPane.add(btnKiiras);
 
 		JButton button = new JButton("View Collection");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				int db = 0, jel = 0, x = 0;
-				for (x = 0; x < ctm.getRowCount(); x++)
-					if ((Boolean) ctm.getValueAt(x, 0)) { // ha kivan jelölve
-						db++;
-						jel = x;
-					}
-				if (db == 0)
-					Utility.showMD("Nincs kijelölve Gyûjtemény!", 0);
-
-				if (db > 1)
-					Utility.showMD("Több Gyûjtemény van kijelölve!", 0);
-				if (db == 1) {
-					CollectionView collectionView = new CollectionView(CDMenu.this, CollectionArrayList.get(jel),
-							AlbumArrayList);
-					collectionView.setVisible(true);
-				}
-
+				Utility.ViewCollection(CDMenu.this, ctm, CollectionArrayList, AlbumArrayList);
 			}
 		});
-		button.setBounds(395, 258, 138, 23);
+		button.setBounds(20, 292, 138, 23);
 		contentPane.add(button);
 
 		JButton btnNewCollection = new JButton("New Collection");
 		btnNewCollection.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int kodv = 0;
-				if (CollectionArrayList.size() == 0) {
-					kodv = 60;
-				} else {
-					kodv = CollectionArrayList.get(CollectionArrayList.size() - 1).getId() + 1;
-					for (int i = 0; i < CollectionArrayList.size(); i++) {
-						if (kodv < CollectionArrayList.get(i).getId()) {
-							kodv = CollectionArrayList.get(i).getId() + 1;
-						}
-					}
-				}
-				NewCollection createCollection = new NewCollection(CDMenu.this, AlbumArrayList, kodv);
-				createCollection.setVisible(true);
-				int acvb = createCollection.Exit();
-				// System.out.println("collection: " + acvb);
-				if (acvb == 1) {
-					Collection newCollection = createCollection.getCollection();
-					CollectionArrayList.add(newCollection);
-					Utility.CollectionArrayListToTableModel(CollectionArrayList, ctm);
-				}
+				Utility.NewCollection(CDMenu.this, ctm, CollectionArrayList, AlbumArrayList);
 			}
 		});
 		btnNewCollection.setBounds(20, 258, 138, 23);
@@ -189,28 +145,10 @@ public class CDMenu extends JFrame {
 		JButton btnNewalbum = new JButton("NewAlbum");
 		btnNewalbum.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int kodv = 0;
-				if (AlbumArrayList.size() == 0) {
-					kodv = 60;
-				} else {
-					kodv = AlbumArrayList.get(AlbumArrayList.size() - 1).getId() + 1;
-					for (int i = 0; i < AlbumArrayList.size(); i++) {
-						if (kodv < AlbumArrayList.get(i).getId()) {
-							kodv = AlbumArrayList.get(i).getId() + 1;
-						}
-					}
-				}
-				NewAlbum createAlbum = new NewAlbum(CDMenu.this, kodv);
-				createAlbum.setVisible(true);
-				System.out.println("album: " + createAlbum.Exit());
-				if (createAlbum.Exit() == 1) {
-					Album newAlbum = createAlbum.getAlbum();
-					AlbumArrayList.add(newAlbum);
-					Utility.AlbumArrayListToTableModel(AlbumArrayList, atm);
-				}
+				Utility.NewAlbum(CDMenu.this, atm, AlbumArrayList);
 			}
 		});
-		btnNewalbum.setBounds(20, 292, 138, 23);
+		btnNewalbum.setBounds(395, 258, 138, 23);
 		contentPane.add(btnNewalbum);
 
 		JButton btnListOfAlbums = new JButton("List of albums");
@@ -220,57 +158,25 @@ public class CDMenu extends JFrame {
 				albumList.setVisible(true);
 			}
 		});
-		btnListOfAlbums.setBounds(30, 326, 138, 23);
+		btnListOfAlbums.setBounds(395, 292, 138, 23);
 		contentPane.add(btnListOfAlbums);
 
 		JButton btnDelete = new JButton("Delete Collection");
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int db = 0, jel = 0, x = 0;
-				for (x = 0; x < ctm.getRowCount(); x++)
-					if ((Boolean) ctm.getValueAt(x, 0)) { // ha kivan jelölve
-						db++;
-						jel = x;
-					}
-				if (db == 0)
-					Utility.showMD("Nincs kijelölve a törlendõ rekord!", 0);
-
-				if (db > 1)
-					Utility.showMD("Több rekord van kijelölve!\nEgyszerrecsak egy rekord törölhetõ!", 0);
-				if (db == 1) {
-					int Id = (int) ctm.getValueAt(jel, 1);
-					ctm.removeRow(jel);
-					Utility.CollectionArrayListRemoveById(CollectionArrayList, Id);
-					Utility.showMD("A rekord törölve!", 1);
-				}
-
+				Utility.DeleteCollection(ctm, CollectionArrayList);
 			}
 		});
-		btnDelete.setBounds(395, 326, 138, 23);
+		btnDelete.setBounds(20, 360, 138, 23);
 		contentPane.add(btnDelete);
 
 		JButton btnModdifyCollection = new JButton("Moddify Collection");
 		btnModdifyCollection.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int jel = Utility.Checked(ctm);
-				
-				if(jel > -1) {
-					int kodv = (int)ctm.getValueAt(jel, 1);
-					String collectionName = (String)ctm.getValueAt(jel, 2);
-					NewCollection createCollection = new NewCollection(CDMenu.this, AlbumArrayList, kodv, collectionName);
-					createCollection.setVisible(true);
-					int acvb = createCollection.Exit();
-					if (acvb == 1) {
-						Collection newCollection = createCollection.getCollection();
-						Utility.CollectionArrayListRemoveById(CollectionArrayList, kodv);
-						CollectionArrayList.add(newCollection);
-						Utility.CollectionArrayListToTableModel(CollectionArrayList, ctm);
-					}
-					
-				}
+				Utility.ModdifyCollection(CDMenu.this, ctm, CollectionArrayList, AlbumArrayList);
 			}
 		});
-		btnModdifyCollection.setBounds(395, 292, 138, 23);
+		btnModdifyCollection.setBounds(20, 326, 138, 23);
 		contentPane.add(btnModdifyCollection);
 
 	}
