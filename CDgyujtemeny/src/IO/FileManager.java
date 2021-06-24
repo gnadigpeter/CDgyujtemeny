@@ -80,6 +80,7 @@ public class FileManager {
 		}
 	}// end CsvReader
 	*/
+	/*
 	public static void CsvReaderCollection2(File fnev, ArrayList<Collection> ctm, ArrayList<Album> al) {
 		String s = "";
 
@@ -92,6 +93,7 @@ public class FileManager {
 				String[] st = s.split(";"); //tömbbe tördeli az adatokat
 				ArrayList<Album> a = new ArrayList<Album>();
 				for(int i=2;i<st.length;i++) {
+					
 					try{
 						a.add(al.get(Utility.AlbumArrayListFindId(al, Utility.StringToInt(st[i]))));
 					}catch(ArrayIndexOutOfBoundsException exception){
@@ -99,6 +101,32 @@ public class FileManager {
 						String ErrorMessage = "Hibás Album Id volt a beolvasott adatok közt\n Hibás Gyûjtemény: " + st[1] + "!";
 						Utility.showMD(ErrorMessage, 1);
 					}
+				}
+				
+				Collection aaa = new Collection(Utility.StringToInt(st[0]),st[1],a);
+				ctm.add(aaa);
+				s = in.readLine();
+			}
+			in.close();
+			JOptionPane.showMessageDialog(null, "Adatok beolvasva!", "", 1);
+		} catch (IOException ioe) {
+			JOptionPane.showMessageDialog(null, "CsvReader: " + ioe.getMessage(), "", 0);
+		}
+	}// end CsvReader
+	*/
+	public static void CsvReaderCollection3(File fnev, ArrayList<Collection> ctm, ArrayList<Album> al) {
+		String s = "";
+
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(fnev));
+			s = in.readLine(); // === mezõnevek az elsõ sorból
+			s = in.readLine(); // === adatsor
+
+			while (s != null) {
+				String[] st = s.split(";"); //tömbbe tördeli az adatokat
+				ArrayList<Integer> a = new ArrayList<Integer>();
+				for(int i=2;i<st.length;i++) {
+					a.add(Utility.StringToInt(st[i]));
 				}
 				
 				Collection aaa = new Collection(Utility.StringToInt(st[0]),st[1],a);
@@ -163,19 +191,20 @@ public class FileManager {
 		}
 	}// end csvWriter
 	*/
-	public static void CsvWriterCollection2(String fnev, ArrayList<Collection> ctm) {
+	public static void CsvWriterCollection2(String fnev, ArrayList<Collection> CAL,  ArrayList<Album> AAL) {
 		try {
 			File file = new File(fnev);
 	        FileWriter fw = new FileWriter(file);
 	        BufferedWriter bw = new BufferedWriter(fw);
 	        bw.write("Collection");
 	        bw.newLine();
-	        for(int i=0;i<ctm.size();i++)
+	        for(int i=0;i<CAL.size();i++)
 	        {
-	            bw.write(ctm.get(i).getId()+";");
-	            bw.write(ctm.get(i).getName()+";");
+	            bw.write(CAL.get(i).getId()+";");
+	            bw.write(CAL.get(i).getName()+";");
 	            
-	            bw.write(AlbumsIds(ctm.get(i).getAlbums()));
+	            //bw.write(AlbumsIds(ctm.get(i).getAlbums()));
+	            bw.write(AlbumsIds(Utility.CollectionAlbumList(CAL.get(i), AAL)));
 	            bw.newLine();
 	        }
 	        bw.close();

@@ -43,9 +43,6 @@ public class CDMenu extends JFrame {
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -105,9 +102,9 @@ public class CDMenu extends JFrame {
 				Utility.AlbumArrayListToTableModel(AlbumArrayList, atm);
 
 				fbe = new File("resources/testGyujtemenyek.csv");
-				FileManager.CsvReaderCollection2(fbe, CollectionArrayList, AlbumArrayList);
+				FileManager.CsvReaderCollection3(fbe, CollectionArrayList, AlbumArrayList);
 				System.out.println("aaa");
-				Utility.CollectionArrayListToTableModel(CollectionArrayList, ctm);
+				Utility.CollectionArrayListToTableModel(CollectionArrayList,AlbumArrayList, ctm);
 				System.out.println("aaa");
 			}
 		});
@@ -118,7 +115,7 @@ public class CDMenu extends JFrame {
 		btnKiiras.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FileManager.CsvWriterAlbum("resources/testAlbumok.csv", AlbumArrayList);
-				FileManager.CsvWriterCollection2("resources/testGyujtemenyek.csv", CollectionArrayList);
+				FileManager.CsvWriterCollection2("resources/testGyujtemenyek.csv", CollectionArrayList, AlbumArrayList);
 			}
 		});
 		btnKiiras.setBounds(119, 11, 89, 23);
@@ -178,6 +175,15 @@ public class CDMenu extends JFrame {
 		});
 		btnModdifyCollection.setBounds(20, 326, 138, 23);
 		contentPane.add(btnModdifyCollection);
+		
+		JButton btnRefress = new JButton("refress");
+		btnRefress.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Utility.RefressTable(CollectionArrayList, AlbumArrayList, ctm);
+			}
+		});
+		btnRefress.setBounds(210, 258, 138, 23);
+		contentPane.add(btnRefress);
 
 	}
 }

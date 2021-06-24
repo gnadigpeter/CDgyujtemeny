@@ -75,7 +75,7 @@ public class NewCollection extends JDialog {
 				} else {
 					
 					ArrayList<Album> aa = new ArrayList<Album>();
-					
+					ArrayList<Integer> AlbumIdList = new ArrayList<>();
 					int db = 0, x = 0;
 					for (x = 0; x < atm.getRowCount(); x++)
 						if ((Boolean) atm.getValueAt(x, 0)) { // ha kivan jelölve
@@ -88,7 +88,9 @@ public class NewCollection extends JDialog {
 							if ((Boolean) atm.getValueAt(i, 0)) { // ha kivan jelölve
 								aa.add(al.get(i));
 							}
-						newCollection = new Collection(maxKod+1,Utility.ReadField(collectionName),aa);
+						
+						AlbumIdList = Utility.AlbumArrayListToIntegerId(aa);
+						newCollection = new Collection(maxKod+1,Utility.ReadField(collectionName),AlbumIdList);
 						Utility.showMD("Gyûjtemény Hozzáadva", 1);
 						exit=1;
 						dispose();
@@ -144,6 +146,7 @@ public class NewCollection extends JDialog {
 				} else {
 					
 					ArrayList<Album> aa = new ArrayList<Album>();
+					ArrayList<Integer> AlbumIdList = new ArrayList<>();
 					
 					int db = 0, x = 0;
 					for (x = 0; x < atm.getRowCount(); x++)
@@ -157,7 +160,8 @@ public class NewCollection extends JDialog {
 							if ((Boolean) atm.getValueAt(i, 0)) { // ha kivan jelölve
 								aa.add(al.get(i));
 							}
-						newCollection = new Collection(maxKod,Utility.ReadField(collectionName),aa);
+						AlbumIdList = Utility.AlbumArrayListToIntegerId(aa);
+						newCollection = new Collection(maxKod,Utility.ReadField(collectionName),AlbumIdList);
 						Utility.showMD("Gyûjtemény Hozzáadva", 1);
 						exit=1;
 						dispose();

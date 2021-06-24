@@ -30,7 +30,7 @@ public class CollectionView extends JDialog {
 		Object tableColumnsATM[] = { "-", "Id", "Elõadó", "Album","Évjárat","Cím","Stílus","Zeneszámok(db)" };
 		atm = new AlbumTableModel(tableColumnsATM, 0);
 		
-		Utility.AlbumArrayListToTableModel(c.getAlbums(), atm); //Collection Albums
+		Utility.AlbumArrayListToTableModel(Utility.CollectionAlbumList(c, AlbumArrayList), atm); //Collection Albums
 		
 		setBounds(100, 100, 500, 300);
 		getContentPane().setLayout(null);
@@ -68,7 +68,7 @@ public class CollectionView extends JDialog {
 				if (db == 1) {
 					int Id = (int) atm.getValueAt(jel, 1);
 					atm.removeRow(jel);
-					Utility.AlbumArrayListRemoveById(c.getAlbums(),Id);
+					Utility.AlbumArrayListRemoveById(Utility.CollectionAlbumList(c, AlbumArrayList),Id);
 					Utility.showMD("A rekord törölve!", 1);
 				}
 			}

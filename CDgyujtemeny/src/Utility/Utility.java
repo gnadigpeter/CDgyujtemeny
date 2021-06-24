@@ -89,18 +89,27 @@ public class Utility {
 		}
 	}
 
-	public static void CollectionArrayListToTableModel(ArrayList<Collection> cl, DefaultTableModel tm) {
+	public static void CollectionArrayListToTableModel(ArrayList<Collection> cl,ArrayList<Album> AlbumArrayList, DefaultTableModel tm) {
 		tm.setRowCount(0);
 		for (int i = 0; i < cl.size(); i++) {
 			tm.addRow(new Object[] { new Boolean(false), cl.get(i).getId(), cl.get(i).getName(),
-					Utility.NumberOfSongsInCollection(cl.get(i)) });
+					Utility.NumberOfSongsInCollection(cl.get(i),AlbumArrayList) });
 		}
 	}
 
-	public static int NumberOfSongsInCollection(Collection c) {
+	public static int NumberOfSongsInCollection(Collection c, ArrayList<Album> AlbumArrayList) {
+
+		ArrayList<Album> ListOfAlbumsInCollection = new ArrayList();
+		ListOfAlbumsInCollection = Utility.CollectionAlbumList(c, AlbumArrayList);
 		int numberOfSongsInCollection = 0;
-		for (int i = 0; i < c.getAlbums().size(); i++) {
-			numberOfSongsInCollection += c.getAlbums().get(i).getZeneSzamokDb();
+		
+		for (int i = 0; i < c.getAlbumIds().size(); i++) {
+			try {
+				numberOfSongsInCollection += ListOfAlbumsInCollection.get(i).getZeneSzamokDb();
+			}catch(IndexOutOfBoundsException eee) {
+				System.out.println("Album not found");
+			}
+			
 		}
 		return numberOfSongsInCollection;
 	}
@@ -172,7 +181,7 @@ public class Utility {
 				Collection newCollection = createCollection.getCollection();
 				Utility.CollectionArrayListRemoveById(CollectionArrayList, kodv);
 				CollectionArrayList.add(newCollection);
-				Utility.CollectionArrayListToTableModel(CollectionArrayList, tm);
+				Utility.CollectionArrayListToTableModel(CollectionArrayList,AlbumArrayList, tm);
 			}
 		}
 
@@ -216,7 +225,7 @@ public class Utility {
 		if (acvb == 1) {
 			Collection newCollection = createCollection.getCollection();
 			CollectionArrayList.add(newCollection);
-			Utility.CollectionArrayListToTableModel(CollectionArrayList, tm);
+			Utility.CollectionArrayListToTableModel(CollectionArrayList,AlbumArrayList, tm);
 		}
 	}
 
@@ -277,6 +286,33 @@ public class Utility {
 			Utility.AlbumArrayListRemoveById(AlbumArrayList, Id);
 			Utility.showMD("A rekord törölve!", 1);
 		}
+	}
+	
+	public static ArrayList<Album> CollectionAlbumList(Collection c, ArrayList<Album> AlbumArrayList){
+		ArrayList<Album> ListOfAlbumsInCollection = new ArrayList();
+		for(int i=0;i<c.getAlbumIds().size();i++) {
+			for(int j=0; j<AlbumArrayList.size();j++){
+				if(c.getAlbumIds().get(i).equals(AlbumArrayList.get(j).getId()))
+				{
+					ListOfAlbumsInCollection.add(AlbumArrayList.get(j));
+				}
+			}
+			
+		}
+		return ListOfAlbumsInCollection;
+	}
+	
+	public static ArrayList<Integer> AlbumArrayListToIntegerId(ArrayList<Album> AlbumArrayList) {
+		ArrayList<Integer> AlbumIdsList = new ArrayList<>();
+		for(int i=0;i<AlbumArrayList.size();i++) {
+			AlbumIdsList.add(AlbumArrayList.get(i).getId());
+		}
+		
+		return AlbumIdsList;
+	}
+	
+	public static void RefressTable(ArrayList<Collection> cl,ArrayList<Album> AlbumArrayList,DefaultTableModel tm ) {
+		Utility.CollectionArrayListToTableModel(cl, AlbumArrayList, tm);
 	}
 
 }// end Utility
